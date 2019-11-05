@@ -61,8 +61,8 @@ public static class ItemData
                 _amount = 1;
                 _value = 1;
                 _type = ItemType.Ingredient;
-                _icon = "Ingredient/Acorn";
-                _mesh = "Ingredient/Acorn";
+                _icon = "Ingredient/Mushroom";
+                _mesh = "Ingredient/Mushroom";
                 _damage = 0;
                 _armour = 0;
                 _heal = 0;
@@ -99,8 +99,8 @@ public static class ItemData
                 _amount = 1;
                 _value = 1;
                 _type = ItemType.Ingredient;
-                _icon = "Ingredient/Acorn";
-                _mesh = "Ingredient/Acorn";
+                _icon = "Ingredient/Mushroom";
+                _mesh = "Ingredient/Mushroom";
                 _damage = 0;
                 _armour = 0;
                 _heal = 0;

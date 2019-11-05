@@ -6,13 +6,18 @@ public class DragAndDropInventory : MonoBehaviour
 {
     #region Variables
     [Header("Inventory")]
+    //bool that activates the visibility of the inventory
     public bool showInv;
+    //list of items
     public List<Item> inv = new List<Item>();
     public int slotX, slotY;
     public Rect inventorySize;
     [Header("Dragging")]
+    //bool to see if player is dragging an item
     public bool isDragging;
+    //last position of the item dragged
     public int draggedFrom;
+    //current item being dragged
     public Item draggedItem;
     public GameObject droppedItem;
     [Header("ToolTip")]
@@ -23,6 +28,7 @@ public class DragAndDropInventory : MonoBehaviour
     public Vector2 scr;
     #endregion
     #region Clamp to Screen
+    //makes sure the inventory window doesnt go outside the border of the screen
     private Rect ClampToScreen(Rect r)
     {
         r.x = Mathf.Clamp(r.x, 0, Screen.width - r.width);
@@ -31,6 +37,7 @@ public class DragAndDropInventory : MonoBehaviour
     }
     #endregion
     #region Add Item
+    //creates item that can be seen in the inventory
     public void AddItem(int itemID)
     {
         for (int i = 0; i < inv.Count; i++)
@@ -45,6 +52,7 @@ public class DragAndDropInventory : MonoBehaviour
     }
     #endregion
     #region Drop Item
+    //if the item is dragged outside of the menu the item will turn into the mesh and fall in the environmemt
     public void DropItem()
     {
         droppedItem = draggedItem.ItemMesh;
@@ -56,6 +64,7 @@ public class DragAndDropInventory : MonoBehaviour
     }
     #endregion
     #region Draw Item
+    //displays the icon in the inventory
     void DrawItem(int windowID)
     {
         if (draggedItem.Icon != null)
@@ -66,6 +75,7 @@ public class DragAndDropInventory : MonoBehaviour
     #endregion
     #region ToolTip
     #region ToolTip Content
+    //displays information about the item when the cursor is hovering over it
     private string ToolTipText(int index)
     {
         string toolTipText = inv[index].Name + "\n" + inv[index].Description + "\n" + inv[index].Value;
@@ -73,6 +83,7 @@ public class DragAndDropInventory : MonoBehaviour
     }
     #endregion
     #region ToolTip Window
+    //creates a display box that the information sits in
     void DrawToolTip(int windowID)
     {
         GUI.Box(new Rect(0, 0, scr.x * 6, scr.y * 2), ToolTipText(toolTipItem));
@@ -80,6 +91,7 @@ public class DragAndDropInventory : MonoBehaviour
     #endregion
     #endregion
     #region Toggle Inventory
+    //void that toggles inventory visibility when I is pressed
     public void ToggleInv()
     {
         showInv = !showInv;
@@ -97,12 +109,14 @@ public class DragAndDropInventory : MonoBehaviour
         }
     }
     #endregion
+    //allows the player to move the inventory menu around the screen with mouse
     #region Drag Inventory
     void InventoryDrag(int windowID)
     {
         GUI.Box(new Rect(0, scr.y * 0.25f, scr.x * 6, scr.y * 0.5f), "Banner");
-        GUI.Box(new Rect(0, scr.y * 4.25f, scr.x * 6, scr.y * 0.5f), "Gold Display");
+        GUI.Box(new Rect(0, scr.y * 4f, scr.x * 6, scr.y * 0.5f), "Gold Display");
         showToolTip = false;
+        //locations of items in inventory
         #region Nested for loop
         int i = 0;
         Event e = Event.current;
@@ -110,8 +124,9 @@ public class DragAndDropInventory : MonoBehaviour
         {
             for (int y = 0; y < slotY; y++)
             {
-                Rect slotLocation = new Rect(scr.x * 0.125f + x * (scr.x * 0.75f), scr.y * 0.75f + y * (scr.x * 0.65f), scr.x * 0.75f, scr.y * 0.65f);
+                Rect slotLocation = new Rect(scr.x * 0 + x * (scr.x * 0.75f), scr.y * 0.75f + y * (scr.x * 0.65f), scr.x * 0.75f, scr.y * 0.65f);
                 GUI.Box(slotLocation, "");
+                //if an item is picked up by the cursor the player can move it
                 #region Pickup Item
                 if (e.button == 0 && e.type == EventType.MouseDown && slotLocation.Contains(e.mousePosition) && !isDragging && !Input.GetKey(KeyCode.LeftShift))
                 {
@@ -122,6 +137,7 @@ public class DragAndDropInventory : MonoBehaviour
                     Debug.Log("Currently dragging your " + draggedItem.Name);
                 }
                 #endregion
+                //if it is dropped on a tile it will swap places with that item
                 #region Swap Item
                 if (e.button == 0 && e.type == EventType.MouseUp && slotLocation.Contains(e.mousePosition) && isDragging && inv[i].Name != null)
                 {
@@ -132,6 +148,7 @@ public class DragAndDropInventory : MonoBehaviour
                     isDragging = false;
                 }
                 #endregion
+                //drops item on slot if mouse is released
                 #region Place Item
                 if (e.button == 0 && e.type == EventType.MouseUp && slotLocation.Contains(e.mousePosition) && isDragging && inv[i].Name == null)
                 {
@@ -144,6 +161,7 @@ public class DragAndDropInventory : MonoBehaviour
                 #region Return Item
 
                 #endregion
+                //displays icon next to mouse
                 #region Draw Item Icon
                 if (inv[i].Name != null)
                 {
@@ -176,16 +194,12 @@ public class DragAndDropInventory : MonoBehaviour
         scr.x = Screen.width / 16;
         scr.y = Screen.height / 9;
         inventorySize = new Rect(scr.x, scr.y, scr.x * 6, scr.y * 4.5f);
-        for (int i = 0; i < slotY; i++)
+        for (int i = 0; i < slotX*slotY; i++)
         {
             inv.Add(new Item());
         }
-        AddItem(0);
-        AddItem(1);
-        AddItem(2);
-        AddItem(400);
-        AddItem(500);
-        AddItem(501);
+        AddItem(101);
+        AddItem(100);
     }
     #endregion
     #region Update

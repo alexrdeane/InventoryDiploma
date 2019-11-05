@@ -307,8 +307,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showInv: 0
-  slotX: 10
-  slotY: 10
+  slotX: 8
+  slotY: 5
   inventorySize:
     serializedVersion: 2
     x: 0
